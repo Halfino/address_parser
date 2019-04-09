@@ -1,3 +1,4 @@
+require 'json'
 class ZipParser
   attr_reader :file
 
@@ -39,8 +40,7 @@ class ZipParser
       a.orientation_number = row['Číslo orientační']
       a.orientation_number_symbol = row['Znak čísla orientačního']
       a.zip = row['PSČ']
-      @address_book << a
+      @address_book << a.to_hash
     end
   end
-
 end

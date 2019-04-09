@@ -14,6 +14,7 @@ time = Benchmark.measure {
   parser = ZipParser.new(file)
   address_book = parser.parse_zip
   puts address_book.size
+  p address_book.first
 }
 
 puts time.real
