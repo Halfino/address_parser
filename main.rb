@@ -18,9 +18,20 @@ time = Benchmark.measure {
 
   client = Elasticsearch::Client.new url: 'http://localhost:9200', log:true
 
-  address_book.each_with_index  do |address, index|
-    client.index index: 'addresses', type: 'address', id: index + 1, body: address.to_hash
+
+  sliced_address_book = address_book.each_slice(1000).to_a
+
+  sliced_address_book.each do |batch_part|
+    body = []
+    batch_part.each do |address|
+      body << {index: 'addresses', type: 'address', data: address.to_hash}
+    end
+
+    client.bulk body: body
   end
+  #address_book.each do |address|
+  #  client.index index: 'addresses', type: 'address', body: address.to_hash
+  #end
 }
 
 puts time.real
