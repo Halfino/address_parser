@@ -24,21 +24,24 @@ class ZipParser
     csv = CSV.parse(file.get_input_stream.read.encode('utf-8','Windows-1250'), :headers => true, :col_sep => ';')
     csv.each do |row|
       a = Address.new
-      a.adm_code = row['Kód ADM']
-      a.city_code = row['Kód obce']
+      #a.adm_code = row['Kód ADM']
+      #a.city_code = row['Kód obce']
       a.city = row['Název obce']
-      a.momc_code = row['Kód MOMC']
+      #a.momc_code = row['Kód MOMC']
       a.momc_name = row['Název MOMC']
-      a.prague_part_code = row['Kód MOP']
+      #a.prague_part_code = row['Kód MOP']
       a.prague_part_name = row['Název MOP']
-      a.city_part_code = row['Kód části obce']
+      #a.city_part_code = row['Kód části obce']
       a.city_part_name = row['Název části obce']
-      a.street_code = row['Kód ulice']
+      #a.street_code = row['Kód ulice']
       a.street_name = row['Název ulice']
-      a.building_type = row['Typ SO']
-      a.house_number = row['Číslo domovní']
+      if row['Typ SO'] == 'č.ev.'
+        a.evidence_number = row['Číslo domovní']
+      elsif row['Typ SO'] == 'č.p.'
+        a.description_number = row['Číslo domovní']
+      end
       a.orientation_number = row['Číslo orientační']
-      a.orientation_number_symbol = row['Znak čísla orientačního']
+      #a.orientation_number_symbol = row['Znak čísla orientačního']
       a.zip = row['PSČ']
       @address_book << a
     end

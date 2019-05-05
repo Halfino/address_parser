@@ -19,12 +19,12 @@ time = Benchmark.measure {
   client = Elasticsearch::Client.new url: 'http://localhost:9200', log:true
 
 
-  sliced_address_book = address_book.each_slice(1000).to_a
+  sliced_address_book = address_book.each_slice(3000).to_a
 
   sliced_address_book.each do |batch_part|
     body = []
     batch_part.each do |address|
-      body << {index: 'addresses', type: 'address', data: address.to_hash}
+      body << {index: {_index: 'addresses', _type: 'address', data: address.to_hash}}
     end
 
     client.bulk body: body

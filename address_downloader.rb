@@ -10,7 +10,7 @@ class AddressDownloader
     @uri = 'http://vdp.cuzk.cz'
   end
 
-  def download_csv_files()
+  def download_csv_files
     begin
       File.open('csv.zip', "wb") do |file|
         file.write open(build_url).read
